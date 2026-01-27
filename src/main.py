@@ -6,21 +6,16 @@ from src.use_case.payment_process import PaymentProcessDTO, PaymentProcessUseCas
 
 app = FastAPI()
 
+
 class ProcessCashbackPayload(BaseModel):
     store_document: str
-    
     purchaser_document: str
     purchase_value: Decimal
-
     payment_method: str
 
 
-
-
 @app.post("/api/payment/process")
-def payment_process(
-    payload: ProcessCashbackPayload
-):
+def payment_process(payload: ProcessCashbackPayload):
 
     use_case = PaymentProcessUseCase()
 
@@ -32,12 +27,11 @@ def payment_process(
     )
 
     try:
-        use_case.execute(dto)
-    
+        result = use_case.execute(dto)
 
-        return responses.Response(status_code=204)
-    except Exception as e:
         return responses.JSONResponse(
-            status_code=400,
-            content={"message": str(e)}
+            content={"message": result},
+            status_code=200,
         )
+    except Exception as e:
+        return responses.JSONResponse(status_code=400, content={"message": str(e)})

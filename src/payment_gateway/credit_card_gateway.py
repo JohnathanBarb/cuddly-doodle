@@ -6,5 +6,5 @@ class CreditCardGateway:
         store_document: str,
         purchaser_document: str,
         purchase_value: Decimal,
-    ) -> None:
-        pass
+    ) -> str:
+        return "Payment processed via credit card"
