@@ -1,8 +1,9 @@
+from decimal import Decimal
+
 from fastapi import FastAPI, responses
 from pydantic import BaseModel
-from decimal import Decimal
-from src.use_case.payment_process import PaymentProcessDTO, PaymentProcessUseCase
 
+from src.use_case.payment_process import PaymentProcessDTO, PaymentProcessUseCase
 
 app = FastAPI()
 
@@ -16,7 +17,6 @@ class ProcessCashbackPayload(BaseModel):
 
 @app.post("/api/payment/process")
 def payment_process(payload: ProcessCashbackPayload):
-
     use_case = PaymentProcessUseCase()
 
     dto = PaymentProcessDTO(

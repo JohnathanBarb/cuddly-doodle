@@ -1,5 +1,5 @@
-from decimal import Decimal
 from dataclasses import dataclass
+from decimal import Decimal
 
 from src.payment_gateway.credit_card_gateway import CreditCardGateway
 from src.payment_gateway.debit_card_gateway import DebitCardGateway
@@ -23,22 +23,20 @@ class PaymentProcessUseCase:
         self.debit_card_gateway = DebitCardGateway()
 
     def execute(self, payment_process_dto: PaymentProcessDTO) -> str:
-   
         if payment_process_dto.payment_method == "credit_card":
             result = self.credit_card_gateway.process_payment(
                 store_document=payment_process_dto.store_document,
                 purchaser_document=payment_process_dto.purchaser_document,
-                purchase_value=payment_process_dto.purchase_value
+                purchase_value=payment_process_dto.purchase_value,
             )
             return result
-        
 
         if payment_process_dto.payment_method == "debit_card":
             result = self.debit_card_gateway.process_payment(
                 store_document=payment_process_dto.store_document,
                 purchaser_document=payment_process_dto.purchaser_document,
-                purchase_value=payment_process_dto.purchase_value
+                purchase_value=payment_process_dto.purchase_value,
             )
             return result
-    
+
         raise PaymentProcessError("Unsupported payment method")

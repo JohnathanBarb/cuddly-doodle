@@ -1,5 +1,6 @@
 from decimal import Decimal
 
+
 class DebitCardGateway:
     def process_payment(
         self,
