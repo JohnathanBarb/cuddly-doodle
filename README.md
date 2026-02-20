@@ -1,12 +1,11 @@
 # cuddly-doodle
-Teste técnico para entrevista Python + testes
+Teste técnico para entrevista Python
 
 ## Descrição do teste
 
 Essa é uma aplicação responsável pelo processamento de pagamentos. E hoje ela tem a capacidade de processar dois tipos de pagamentos, pagamentos utilizando cartão de crédito e pagamentos utilizando cartão de débito.
 
-Nossa empresa entrou tarde na adoção do PIX e precisamos implementar esse novo gateway na aplicação.
-
+Nossa empresa entrou tarde na adoção do PIX e precisamos implementar esse novo meio de pagamento na aplicação. Temos o teste `test_payment_process_pix` que por hora está sendo pulado, mas ao final da implementação o teste deve "passar".
 
 ### Instalação do projeto
 

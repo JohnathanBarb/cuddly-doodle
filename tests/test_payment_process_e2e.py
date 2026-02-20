@@ -1,5 +1,4 @@
 import pytest
-
 from fastapi.testclient import TestClient
 
 from src.main import app
@@ -21,7 +20,9 @@ def test_payment_process_credit_card(client):
     response = client.post("/api/payment/process", json=payload)
 
     assert response.status_code == 200
-    assert response.json() == {"message": "Payment processed via credit card"}
+    assert response.json() == {
+        "message": "A Cielo processou o pagamento para a loja 12345678901234"
+    }
 
 
 def test_payment_process_debit_card(client):
@@ -35,7 +36,26 @@ def test_payment_process_debit_card(client):
     response = client.post("/api/payment/process", json=payload)
 
     assert response.status_code == 200
-    assert response.json() == {"message": "Payment processed via debit card"}
+    assert response.json() == {
+        "message": "A Cielo processou uma compra no cartão de débito do cliente 98765432100"
+    }
+
+
+@pytest.mark.skip("Funcionalidade à ser implementada")
+def test_payment_process_pix(client):
+    payload = {
+        "store_document": "12345678901234",
+        "purchaser_document": "98765432100",
+        "purchase_value": "150.75",
+        "payment_method": "pix",
+    }
+
+    response = client.post("/api/payment/process", json=payload)
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "message": "O Banco Central processou o pix de 98765432100 para 12345678901234"
+    }
 
 
 def test_payment_process_unsupported_payment_method(client):
@@ -49,4 +69,4 @@ def test_payment_process_unsupported_payment_method(client):
     response = client.post("/api/payment/process", json=payload)
 
     assert response.status_code == 400
-    assert response.json() == {"message": "Unsupported payment method"}
+    assert response.json() == {"message": "Método de pagamento não suportado"}

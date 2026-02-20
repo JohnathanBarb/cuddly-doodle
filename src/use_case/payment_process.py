@@ -1,9 +1,6 @@
 from dataclasses import dataclass
 from decimal import Decimal
 
-from src.payment_gateway.credit_card_gateway import CreditCardGateway
-from src.payment_gateway.debit_card_gateway import DebitCardGateway
-
 
 @dataclass
 class PaymentProcessDTO:
@@ -17,26 +14,38 @@ class PaymentProcessError(Exception):
     pass
 
 
-class PaymentProcessUseCase:
-    def __init__(self) -> None:
-        self.credit_card_gateway = CreditCardGateway()
-        self.debit_card_gateway = DebitCardGateway()
+def process_credit_card_payment(
+    purchaser_document: str,
+    purchase_value: Decimal,
+    store_document: str,
+) -> str:
+    # Essa função faz o processamento do pagamento, utilizando cartão de credito
+    return f"A Cielo processou o pagamento para a loja {store_document}"
 
+
+def process_debit_card_payment(
+    purchaser_document: str,
+    purchase_value: Decimal,
+    store_document: str,
+) -> str:
+    # Essa função faz o processamento do pagamento, utilizando cartão de débito
+    return f"A Cielo processou uma compra no cartão de débito do cliente {purchaser_document}"
+
+
+class PaymentProcessUseCase:
     def execute(self, payment_process_dto: PaymentProcessDTO) -> str:
         if payment_process_dto.payment_method == "credit_card":
-            result = self.credit_card_gateway.process_payment(
-                store_document=payment_process_dto.store_document,
+            return process_credit_card_payment(
                 purchaser_document=payment_process_dto.purchaser_document,
                 purchase_value=payment_process_dto.purchase_value,
+                store_document=payment_process_dto.store_document,
             )
-            return result
 
         if payment_process_dto.payment_method == "debit_card":
-            result = self.debit_card_gateway.process_payment(
-                store_document=payment_process_dto.store_document,
+            return process_debit_card_payment(
                 purchaser_document=payment_process_dto.purchaser_document,
                 purchase_value=payment_process_dto.purchase_value,
+                store_document=payment_process_dto.store_document,
             )
-            return result
 
-        raise PaymentProcessError("Unsupported payment method")
+        raise PaymentProcessError("Método de pagamento não suportado")

@@ -5,4 +5,4 @@ run:
 	poetry run fastapi dev src/main.py
 
 test:
-	poetry run pytest .
+	poetry run pytest . -v
