@@ -1,10 +1,16 @@
+import logging
 from decimal import Decimal
 
 from fastapi import FastAPI, responses
 from pydantic import BaseModel
 
-from src.use_case.payment_process import PaymentProcessDTO, PaymentProcessUseCase
+from src.use_case.payment_process import (
+    PaymentProcessDTO,
+    PaymentProcessError,
+    PaymentProcessUseCase,
+)
 
+logger = logging.getLogger(__name__)
 app = FastAPI()
 
 
@@ -33,5 +39,10 @@ def payment_process(payload: ProcessCashbackPayload):
             content={"message": result},
             status_code=200,
         )
-    except Exception as e:
+    except PaymentProcessError as e:
+        logger.exception("Erro esperado")
         return responses.JSONResponse(status_code=400, content={"message": str(e)})
+
+    except Exception as e:
+        logger.exception("Erro inesperado")
+        return responses.JSONResponse(status_code=500, content={"message": str(e)})

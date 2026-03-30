@@ -41,6 +41,23 @@ def test_payment_process_debit_card(client):
     }
 
 
+@pytest.mark.skip("Remover depois de implementar pix")
+def test_payment_process_pix(client):
+    payload = {
+        "store_document": "12345678901234",
+        "purchaser_document": "98765432100",
+        "purchase_value": "150.75",
+        "payment_method": "pix",
+    }
+
+    response = client.post("/api/payment/process", json=payload)
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "message": "O Banco Central fez a transferência do 98765432100 para 12345678901234"
+    }
+
+
 def test_payment_process_unsupported_payment_method(client):
     payload = {
         "store_document": "12345678901234",
